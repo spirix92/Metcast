@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Строки для основных значений -->
+    <string name="app_name">Погода</string>
+    <string name="settings">Настройки</string>
+    <string name="about_the_program">О программе</string>
+
+    <!-- Пустой заголовок приложения -->
+    <string name="title_activity_main"></string>
+
+    <!-- Строки для значений фрагментов -->
+    <string name="first_fragment_label">Фрагмент 1</string>
+    <string name="second_fragment_label">Фрагмент 2</string>
+    <string name="next">Далее</string>
+    <string name="previous">Ранее</string>
+    <string name="hello_first_fragment">Привет фрагмент 1</string>
+    <string name="hello_second_fragment">Привет фрагмент 2</string>
+
+    <!-- Строки для переменных фрагментов -->
+    <string name="clear">Ясно</string>
+    <string name="cloudy">Облачно</string>
+    <string name="rain">Дождь</string>
+    <string name="snow">Снег</string>
+
+</resources>
