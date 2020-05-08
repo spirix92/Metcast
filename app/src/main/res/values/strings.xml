@@ -1,3 +1,24 @@
 <resources>
+    <!-- Strings used for current values -->
     <string name="app_name">Metcast</string>
+    <string name="settings">Settings</string>
+    <string name="about_the_program">About the program</string>
+
+    <!-- Empty heading app -->
+    <string name="title_activity_main"></string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment</string>
+
+    <!-- Strings used for change values -->
+    <string name="clear">Clear</string>
+    <string name="cloudy">Cloudy</string>
+    <string name="rain">Rain</string>
+    <string name="snow">Snow</string>
+
 </resources>
