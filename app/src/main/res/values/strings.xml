@@ -20,5 +20,11 @@
     <string name="cloudy">Cloudy</string>
     <string name="rain">Rain</string>
     <string name="snow">Snow</string>
+    <string name="start_city">SanFrancisco</string>
+    <string name="start_temperature">-15</string>
+    <string name="start_wind">20</string>
+    <string name="start_pressure">800</string>
+    <string name="start_humidity">100</string>
+    <string name="start_day">today</string>
 
 </resources>

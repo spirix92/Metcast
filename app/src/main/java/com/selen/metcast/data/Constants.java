@@ -6,5 +6,5 @@ public interface Constants {
     String RAIN = "rain";
     String SNOW = "rain";
 
-    String DAYS_LIST = "days list";
+    String CURRENT_DAY_POSITION_IN_LIST = "current day in list";
 }

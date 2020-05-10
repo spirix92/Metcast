@@ -20,6 +20,7 @@ import java.util.List;
 public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerViewAdapter.ViewHolder> {
 
     private List<Day> days;
+    private OnItemClickListener itemClickListener;
 
     DaysRecyclerViewAdapter() {
         days = MainSingleton.getInstance().getDaysList();
@@ -52,12 +53,22 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
                 .getPrecipitation().getPicture(holder.getItem_day().getResources()));
     }
 
+    // Интерфейс для обработки нажатий
+    public interface OnItemClickListener {
+        void onItemClick(View view , int position);
+    }
+
+    // Сеттер слушателя нажатий
+    public void SetOnItemClickListener(OnItemClickListener itemClickListener){
+        this.itemClickListener = itemClickListener;
+    }
+
     @Override
     public int getItemCount() {
         return days.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private TextView dayOfMonth;
         private TextView dayOfWeek;
         private TextView temperature;
@@ -66,11 +77,19 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            dayOfMonth = itemView.findViewById(R.id.day_of_month);
-            dayOfWeek = itemView.findViewById(R.id.day_of_week);
-            temperature = itemView.findViewById(R.id.temperature);
-            temperaturePicture = itemView.findViewById(R.id.temperature_picture);
+            dayOfMonth = itemView.findViewById(R.id.item_day_of_month);
+            dayOfWeek = itemView.findViewById(R.id.item_day_of_week);
+            temperature = itemView.findViewById(R.id.item_temperature);
+            temperaturePicture = itemView.findViewById(R.id.item_temperature_picture);
             item_day = itemView.findViewById(R.id.item);
+            item_day.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (itemClickListener != null) {
+                        itemClickListener.onItemClick(v, getAdapterPosition());
+                    }
+                }
+            });
         }
 
         TextView getDayOfMonth() {

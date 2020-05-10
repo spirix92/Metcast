@@ -1,53 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/constraint_layout"
+    android:id="@+id/coordinator_layout"
     tools:context=".MainActivity">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/app_bar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-<!--    <fragment-->
-<!--        android:name="com.selen.metcast.FragmentDaysRecyclerView"-->
-<!--        android:id="@+id/main_fragment_days_recycler_view2"-->
+<!--        <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:id="@+id/appBarLayout"-->
 <!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content" />-->
-    <Button
-        android:id="@+id/qqq"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sdfsdfsdfsd" />
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_scrollFlags="scroll|enterAlways">-->
+<!--            <com.google.android.material.appbar.CollapsingToolbarLayout-->
+<!--                android:id="@+id/toolbarLayout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:fitsSystemWindows="true"-->
+<!--                app:layout_scrollFlags="scroll|exitUntilCollapsed">-->
 
+<!--            </com.google.android.material.appbar.CollapsingToolbarLayout>-->
+<!--        </com.google.android.material.appbar.AppBarLayout>-->
+        <FrameLayout
+            android:id="@+id/main_fragment_current_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            app:layout_collapseMode="parallax" />
     <fragment
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:name="com.selen.metcast.FragmentDaysRecyclerView"
         android:id="@+id/main_fragment_days_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp" />
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
