@@ -55,11 +55,11 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
 
     // Интерфейс для обработки нажатий
     public interface OnItemClickListener {
-        void onItemClick(View view , int position);
+        void onItemClick(int position);
     }
 
     // Сеттер слушателя нажатий
-    public void SetOnItemClickListener(OnItemClickListener itemClickListener){
+    void SetOnItemClickListener(OnItemClickListener itemClickListener){
         this.itemClickListener = itemClickListener;
     }
 
@@ -86,7 +86,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
                 @Override
                 public void onClick(View v) {
                     if (itemClickListener != null) {
-                        itemClickListener.onItemClick(v, getAdapterPosition());
+                        itemClickListener.onItemClick(getAdapterPosition());
                     }
                 }
             });

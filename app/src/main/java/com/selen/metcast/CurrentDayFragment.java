@@ -23,17 +23,19 @@ import java.util.List;
 
 public class CurrentDayFragment extends Fragment {
 
-    private int dayPosition = 0;
+    private int dayPosition;
+    private String currentCIty;
     private List<Day> days;
 
     public CurrentDayFragment() {
         days = MainSingleton.getInstance().getDaysList();
     }
 
-    public static CurrentDayFragment newInstance(int dayPosition) {
+    static CurrentDayFragment newInstance(int dayPosition, String currentCIty) {
         CurrentDayFragment fragment = new CurrentDayFragment();
         Bundle args = new Bundle();
         args.putInt(Constants.CURRENT_DAY_POSITION_IN_LIST, dayPosition);
+        args.putString(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY, currentCIty);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,12 +45,14 @@ public class CurrentDayFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             dayPosition = getArguments().getInt(Constants.CURRENT_DAY_POSITION_IN_LIST);
+            currentCIty = getArguments().getString(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY);
         }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt(Constants.CURRENT_DAY_POSITION_IN_LIST, dayPosition);
+        outState.putString(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY, currentCIty);
         super.onSaveInstanceState(outState);
 
     }
@@ -63,27 +67,27 @@ public class CurrentDayFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((TextView) view.findViewById(R.id.current_city_name)).setText(currentCIty);
+
         Day day = days.get(dayPosition);
 
         GregorianCalendar calendar = day.getDate();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("d MMMM yyyy, EEEE");
-        ((TextView)view.findViewById(R.id.current_day)).setText(dateFormat.format(calendar.getTime()));
+        ((TextView) view.findViewById(R.id.current_day)).setText(dateFormat.format(calendar.getTime()));
 
         int temp = day.getTemperature();
-        ((TextView)view.findViewById(R.id.current_temperature)).setText(String.valueOf(temp));
+        ((TextView) view.findViewById(R.id.current_temperature)).setText(String.valueOf(temp));
 
         view.findViewById(R.id.current_background).setBackgroundColor((temp > 0)
                 ? view.getResources().getColor(R.color.sun)
                 : view.getResources().getColor(R.color.snow));
 
-        ((ImageView)view.findViewById(R.id.current_temperature_picture)).setImageDrawable(day
+        ((ImageView) view.findViewById(R.id.current_temperature_picture)).setImageDrawable(day
                 .getPrecipitation().getPicture(view.getResources()));
 
-        ((TextView)view.findViewById(R.id.current_wind)).setText(String.format("%d", day.getWind()));
-
-        ((TextView)view.findViewById(R.id.current_pressure)).setText(String.format("%d", day.getPressure()));
-
-        ((TextView)view.findViewById(R.id.current_humidity)).setText(String.format("%d", day.getHumidity()));
-
+        ((TextView) view.findViewById(R.id.current_wind)).setText(String.format("%d", day.getWind()));
+        ((TextView) view.findViewById(R.id.current_pressure)).setText(String.format("%d", day.getPressure()));
+        ((TextView) view.findViewById(R.id.current_humidity)).setText(String.format("%d", day.getHumidity()));
     }
+
 }

@@ -3,17 +3,17 @@ package com.selen.metcast.data;
 import java.util.GregorianCalendar;
 
 public class Day {
-//    текущая дата
+    //    текущая дата
     private GregorianCalendar date;
-//    текущая температура
+    //    текущая температура
     private int temperature;
-//    текущая сила ветра
+    //    текущая сила ветра
     private int wind;
-//    текущее давление
+    //    текущее давление
     private int pressure;
-//    текущая влажность
+    //    текущая влажность
     private int humidity;
-//    Атмосферные осадки
+    //    Атмосферные осадки
     private Precipitation precipitation;
 
     public Day(GregorianCalendar date, int temperature, int wind, int pressure, int humidity, Precipitation precipitation) {
