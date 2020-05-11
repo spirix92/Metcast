@@ -17,17 +17,23 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
         <FrameLayout
             android:id="@+id/main_fragment_current_day"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
+            android:layout_weight="4"
             app:layout_collapseMode="parallax" />
         <FrameLayout
             android:id="@+id/main_fragment_days_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
-            app:layout_collapseMode="parallax" />
+            android:layout_weight="2"
+            app:layout_collapseMode="parallax"/>
+        </TableRow>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

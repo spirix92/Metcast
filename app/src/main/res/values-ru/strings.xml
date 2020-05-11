@@ -4,6 +4,10 @@
     <string name="app_name">Погода</string>
     <string name="settings">Настройки</string>
     <string name="about_the_program">О программе</string>
+    <string name="dark_mode">Темная тема</string>
+    <string name="select_city">Выберите город</string>
+    <string name="save_settings">Сохранить</string>
+    <string name="exit_without_saving">Для выхода без сохранения дважды нажмите назад</string>
 
     <!-- Пустой заголовок приложения -->
     <string name="title_activity_main"></string>
@@ -21,5 +25,11 @@
     <string name="cloudy">Облачно</string>
     <string name="rain">Дождь</string>
     <string name="snow">Снег</string>
+    <string name="start_city">УсьтьКузьминск</string>
+    <string name="start_temperature">-15</string>
+    <string name="start_wind">20</string>
+    <string name="start_pressure">800</string>
+    <string name="start_humidity">100</string>
+    <string name="start_day">Сегодня</string>
 
 </resources>

@@ -3,6 +3,10 @@
     <string name="app_name">Metcast</string>
     <string name="settings">Settings</string>
     <string name="about_the_program">About the program</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="select_city">Select city</string>
+    <string name="save_settings">Save</string>
+    <string name="exit_without_saving">To exit without saving, double-click back</string>
 
     <!-- Empty heading app -->
     <string name="title_activity_main"></string>
@@ -20,5 +24,11 @@
     <string name="cloudy">Cloudy</string>
     <string name="rain">Rain</string>
     <string name="snow">Snow</string>
+    <string name="start_city">SanFrancisco</string>
+    <string name="start_temperature">-15</string>
+    <string name="start_wind">20</string>
+    <string name="start_pressure">800</string>
+    <string name="start_humidity">100</string>
+    <string name="start_day">Today</string>
 
 </resources>
