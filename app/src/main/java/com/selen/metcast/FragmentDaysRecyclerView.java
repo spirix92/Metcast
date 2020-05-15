@@ -1,5 +1,6 @@
 package com.selen.metcast;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.selen.metcast.data.Constants;
 
 public class FragmentDaysRecyclerView extends Fragment {
@@ -74,6 +76,9 @@ public class FragmentDaysRecyclerView extends Fragment {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.main_fragment_current_day, detail);
                 ft.commit();
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+                    ((AppBarLayout) getActivity().findViewById(R.id.main_appbar_layout))
+                            .setExpanded(true, true);
             }
         });
     }
