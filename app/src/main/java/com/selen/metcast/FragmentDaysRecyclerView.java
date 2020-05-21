@@ -60,10 +60,10 @@ public class FragmentDaysRecyclerView extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = (RecyclerView) view;
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         recyclerView.setLayoutManager(layoutManager);
         DaysRecyclerViewAdapter adapter = new DaysRecyclerViewAdapter();
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(view.getResources().getDrawable(R.drawable.separator));
         recyclerView.addItemDecoration(itemDecoration);
 
@@ -73,11 +73,11 @@ public class FragmentDaysRecyclerView extends Fragment {
             @Override
             public void onItemClick(int position) {
                 CurrentDayFragment detail = CurrentDayFragment.newInstance(position, currentCIty);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                FragmentTransaction ft = getParentFragmentManager().beginTransaction();
                 ft.replace(R.id.main_fragment_current_day, detail);
                 ft.commit();
                 if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                    ((AppBarLayout) getActivity().findViewById(R.id.main_appbar_layout))
+                    ((AppBarLayout) requireActivity().findViewById(R.id.main_appbar_layout))
                             .setExpanded(true, true);
             }
         });

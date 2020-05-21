@@ -17,5 +17,10 @@ public interface Constants {
     String NAME_SHARED_PREFERENCE_CITY = "my setting city";
     String GET_CITY_NAME = "get city name";
 
+    int DAYS_IN_LIST = 30;
+
+    String WEATHER_URL_START = "https://api.openweathermap.org/data/2.5/weather?q=";
+    String WEATHER_URL_END = "&units=metric&lang=ru&appid=";
+
     int OPEN_SETTINGS_REQUEST_CODE = 942;
 }
