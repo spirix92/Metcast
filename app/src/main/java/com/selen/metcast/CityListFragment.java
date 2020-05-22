@@ -13,42 +13,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.selen.metcast.data.Constants;
+import com.selen.metcast.data.MainSingleton;
 
-public class FragmentDaysRecyclerView extends Fragment {
+import java.util.List;
 
-    private String currentCIty;
+public class CityListFragment extends Fragment {
 
-    public FragmentDaysRecyclerView() {
-
-    }
-
-    static FragmentDaysRecyclerView newInstance(String currentCIty) {
-        FragmentDaysRecyclerView fragment = new FragmentDaysRecyclerView();
-        Bundle args = new Bundle();
-        args.putString(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY, currentCIty);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private List<String> cities;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            currentCIty = getArguments().getString(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putString(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY, currentCIty);
-        super.onSaveInstanceState(outState);
+        cities = MainSingleton.getInstance().getCitiesList();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_days_recycler_view, container, false);
+        return inflater.inflate(R.layout.fragment_city_list, container, false);
     }
 
     @Override
@@ -58,7 +40,8 @@ public class FragmentDaysRecyclerView extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         recyclerView.setLayoutManager(layoutManager);
-        DaysRecyclerViewAdapter adapter = new DaysRecyclerViewAdapter(currentCIty, requireActivity());
+
+        CitiesRecyclerViewAdapter adapter = new CitiesRecyclerViewAdapter(requireActivity());
         DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(view.getResources().getDrawable(R.drawable.separator));
         recyclerView.addItemDecoration(itemDecoration);
@@ -66,5 +49,4 @@ public class FragmentDaysRecyclerView extends Fragment {
         recyclerView.setAdapter(adapter);
 
     }
-
 }

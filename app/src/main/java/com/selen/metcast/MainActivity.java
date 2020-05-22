@@ -2,6 +2,7 @@ package com.selen.metcast;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.selen.metcast.data.Constants;
 import com.selen.metcast.data.init_data.DaysListInitiaterableBuilder;
@@ -19,20 +21,27 @@ public class MainActivity extends BaseActivity {
 
     private int startPosition;
     private String savedCity;
+    private OnItemDayClickListener itemDayClickListener;
+    private AppBarLayout appbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.main_toolbar_layout);
+        appbarLayout = findViewById(R.id.main_appbar_layout);
         setSupportActionBar(toolbar);
+        itemDayClickListener = new OnItemDayClickListener() {
+            @Override
+            public void onItemClick(int position, String city) {
+                addFragmentCurrentDay(position, city);
+            }
+        };
 
         if (savedInstanceState == null) {
             SharedPreferences sharedPref = getSharedPreferences(Constants.NAME_SHARED_PREFERENCE_CITY, MODE_PRIVATE);
             savedCity = sharedPref.getString(Constants.GET_CITY_NAME, getResources().getString(R.string.start_city));
-            new DaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST).build();
-            addFragmentCurrentDay(startPosition, savedCity);
-            addFragmentRecyclerView(savedCity);
+            initFragments();
         } else {
             savedCity = savedInstanceState.getString(Constants.CURRENT_CITY_MAIN_ACTIVITY);
         }
@@ -44,6 +53,8 @@ public class MainActivity extends BaseActivity {
         CurrentDayFragment currentDayFragment = CurrentDayFragment.newInstance(startPosition, savedCity);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment_current_day, currentDayFragment).commit();
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            appbarLayout.setExpanded(true, true);
     }
 
     //    добавляем фрагмент со списком дней
@@ -88,12 +99,16 @@ public class MainActivity extends BaseActivity {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(Constants.GET_CITY_NAME, savedCity);
                 editor.apply();
-                new DaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST).build();
-                addFragmentCurrentDay(startPosition, savedCity);
-                addFragmentRecyclerView(savedCity);
+                initFragments();
                 recreate();
             }
         }
+    }
+
+    private void initFragments() {
+        new DaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST).build();
+        addFragmentCurrentDay(startPosition, savedCity);
+        addFragmentRecyclerView(savedCity);
     }
 
     @Override
@@ -102,4 +117,12 @@ public class MainActivity extends BaseActivity {
         outState.putString(Constants.CURRENT_CITY_MAIN_ACTIVITY, savedCity);
     }
 
+    // Интерфейс для обработки нажатий
+    public interface OnItemDayClickListener {
+        void onItemClick(int position, String city);
+    }
+
+    public OnItemDayClickListener getItemDayClickListener() {
+        return itemDayClickListener;
+    }
 }

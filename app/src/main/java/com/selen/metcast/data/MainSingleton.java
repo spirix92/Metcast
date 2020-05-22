@@ -10,9 +10,11 @@ public class MainSingleton implements Serializable {
     private static final Object syncObj = new Object();
 
     private List<Day> days;
+    private List<String> cities;
 
     private MainSingleton() {
         days = new ArrayList<>();
+        cities = new ArrayList<>();
     }
 
     public static MainSingleton getInstance() {
@@ -41,6 +43,24 @@ public class MainSingleton implements Serializable {
     public void clearDaysList() {
         synchronized (syncObj) {
             days.clear();
+        }
+    }
+
+    public List<String> getCitiesList() {
+        synchronized (syncObj) {
+            return cities;
+        }
+    }
+
+    public void addCitiesList(String city) {
+        synchronized (syncObj) {
+            cities.add(city);
+        }
+    }
+
+    public void clearCitiesList() {
+        synchronized (syncObj) {
+            cities.clear();
         }
     }
 

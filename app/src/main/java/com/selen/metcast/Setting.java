@@ -12,6 +12,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.selen.metcast.data.Constants;
+import com.selen.metcast.data.MainSingleton;
+
+import java.util.List;
 
 public class Setting extends BaseActivity {
 
@@ -19,6 +22,7 @@ public class Setting extends BaseActivity {
     private Switch darkMode;
     private TextInputEditText currentCity;
     private MaterialButton save;
+    private OnItemCityClickListener itemCityClickListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,15 @@ public class Setting extends BaseActivity {
         save.setOnClickListener(saveClick);
         currentCity.setOnKeyListener(selectCityListenerMK);
         currentCity.setOnEditorActionListener(selectCityListenerPK);
+        addFragmentCityRecyclerView();
+
+        itemCityClickListener = new OnItemCityClickListener() {
+            @Override
+            public void onItemClick(String city) {
+                intentCreate(city);
+            }
+        };
+
     }
 
     @Override
@@ -43,19 +56,10 @@ public class Setting extends BaseActivity {
         back_pressed = System.currentTimeMillis();
     }
 
-    private void intentCreate() {
-        setDarkTheme(darkMode.isChecked());
-        recreate();
-        Intent intent = new Intent();
-        intent.putExtra(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY, currentCity.getText().toString());
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
     private View.OnClickListener saveClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            intentCreate();
+            intentCreate(currentCity.getText().toString());
         }
     };
 
@@ -65,7 +69,7 @@ public class Setting extends BaseActivity {
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             boolean result = false;
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                intentCreate();
+                intentCreate(currentCity.getText().toString());
                 result = true;
             }
             return result;
@@ -78,11 +82,45 @@ public class Setting extends BaseActivity {
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             boolean result = false;
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                intentCreate();
+                intentCreate(currentCity.getText().toString());
                 result = true;
             }
             return result;
         }
     };
+
+    // Интерфейс для обработки нажатий
+    public interface OnItemCityClickListener {
+        void onItemClick(String city);
+    }
+
+    public OnItemCityClickListener getItemCityClickListener() {
+        return itemCityClickListener;
+    }
+
+    private void intentCreate(String city) {
+        List<String> cities = MainSingleton.getInstance().getCitiesList();
+        boolean cityIsListed = false;
+        for (String s : cities) {
+            if (city.equals(s)) {
+                cityIsListed = true;
+                break;
+            }
+        }
+        if (!cityIsListed) cities.add(city);
+        setDarkTheme(darkMode.isChecked());
+        recreate();
+        Intent intent = new Intent();
+        intent.putExtra(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY, city);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    //    добавляем фрагмент со списком городов
+    public void addFragmentCityRecyclerView() {
+        CityListFragment recyclerViewCityFragment = new CityListFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.settings_fragment_city_recycler_view, recyclerViewCityFragment).commit();
+    }
 
 }
