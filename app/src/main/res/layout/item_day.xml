@@ -6,7 +6,7 @@
     app:cardCornerRadius="15dp"
     app:cardElevation="3dp" >
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/item"
+        android:id="@+id/item_day"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
         <TextView

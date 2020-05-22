@@ -1,5 +1,6 @@
 package com.selen.metcast;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,15 @@ import java.util.List;
 public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerViewAdapter.ViewHolder> {
 
     private List<Day> days;
-    private OnItemClickListener itemClickListener;
+    private String currentCity;
+    private MainActivity.OnItemDayClickListener itemDayClickListener;
 
-    DaysRecyclerViewAdapter() {
+    DaysRecyclerViewAdapter(String currentCity, Activity activity) {
         days = MainSingleton.getInstance().getDaysList();
+        this.currentCity = currentCity;
+        if (activity instanceof MainActivity) {
+            itemDayClickListener = ((MainActivity) activity).getItemDayClickListener();
+        }
     }
 
     @NonNull
@@ -53,16 +59,6 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
                 .getPrecipitation().getPicture(holder.getItem_day().getResources()));
     }
 
-    // Интерфейс для обработки нажатий
-    public interface OnItemClickListener {
-        void onItemClick(int position);
-    }
-
-    // Сеттер слушателя нажатий
-    void SetOnItemClickListener(OnItemClickListener itemClickListener){
-        this.itemClickListener = itemClickListener;
-    }
-
     @Override
     public int getItemCount() {
         return days.size();
@@ -81,12 +77,12 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
             dayOfWeek = itemView.findViewById(R.id.item_day_of_week);
             temperature = itemView.findViewById(R.id.item_temperature);
             temperaturePicture = itemView.findViewById(R.id.item_temperature_picture);
-            item_day = itemView.findViewById(R.id.item);
+            item_day = itemView.findViewById(R.id.item_day);
             item_day.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (itemClickListener != null) {
-                        itemClickListener.onItemClick(getAdapterPosition());
+                    if (itemDayClickListener != null) {
+                        itemDayClickListener.onItemClick(getAdapterPosition(), currentCity);
                     }
                 }
             });
