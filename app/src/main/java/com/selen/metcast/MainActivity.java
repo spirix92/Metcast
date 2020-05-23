@@ -101,7 +101,6 @@ public class MainActivity extends BaseActivity {
                 editor.putString(Constants.GET_CITY_NAME, savedCity);
                 editor.apply();
                 initFragments();
-                recreate();
             }
         }
     }
@@ -111,13 +110,11 @@ public class MainActivity extends BaseActivity {
         replaceFragmentCurrentDay(startPosition, savedCity);
         replaceFragmentRecyclerView(savedCity);
         if (!result) {
-//            Snackbar.make(appbarLayout,
-//                    "рандомное", Snackbar.LENGTH_SHORT).show();
-            Toast.makeText(this,"рандомное",Toast.LENGTH_SHORT).show();
+            Snackbar.make(appbarLayout,
+                    "рандомное", Snackbar.LENGTH_SHORT).show();
         } else {
-//            Snackbar.make(appbarLayout,
-//                    "с сайта", Snackbar.LENGTH_SHORT).show();
-            Toast.makeText(this,"с сайта",Toast.LENGTH_SHORT).show();
+            Snackbar.make(appbarLayout,
+                    "с сайта", Snackbar.LENGTH_SHORT).show();
         }
     }
 
