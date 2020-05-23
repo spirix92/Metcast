@@ -34,7 +34,7 @@ public class Setting extends BaseActivity {
         save.setOnClickListener(saveClick);
         currentCity.setOnKeyListener(selectCityListenerMK);
         currentCity.setOnEditorActionListener(selectCityListenerPK);
-        addFragmentCityRecyclerView();
+        replaceFragmentCityRecyclerView();
 
         itemCityClickListener = new OnItemCityClickListener() {
             @Override
@@ -89,6 +89,13 @@ public class Setting extends BaseActivity {
         }
     };
 
+    //    добавляем фрагмент со списком городов
+    public void replaceFragmentCityRecyclerView() {
+        CityListFragment recyclerViewCityFragment = new CityListFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.settings_fragment_city_recycler_view, recyclerViewCityFragment).commit();
+    }
+
     // Интерфейс для обработки нажатий
     public interface OnItemCityClickListener {
         void onItemClick(String city);
@@ -99,6 +106,16 @@ public class Setting extends BaseActivity {
     }
 
     private void intentCreate(String city) {
+        addCity(city);
+        setDarkTheme(darkMode.isChecked());
+        recreate();
+        Intent intent = new Intent();
+        intent.putExtra(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY, city);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    private void addCity(String city) {
         List<String> cities = MainSingleton.getInstance().getCitiesList();
         boolean cityIsListed = false;
         for (String s : cities) {
@@ -108,19 +125,6 @@ public class Setting extends BaseActivity {
             }
         }
         if (!cityIsListed) cities.add(city);
-        setDarkTheme(darkMode.isChecked());
-        recreate();
-        Intent intent = new Intent();
-        intent.putExtra(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY, city);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    //    добавляем фрагмент со списком городов
-    public void addFragmentCityRecyclerView() {
-        CityListFragment recyclerViewCityFragment = new CityListFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.settings_fragment_city_recycler_view, recyclerViewCityFragment).commit();
     }
 
 }

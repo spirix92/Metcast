@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +35,7 @@ public class MainActivity extends BaseActivity {
         itemDayClickListener = new OnItemDayClickListener() {
             @Override
             public void onItemClick(int position, String city) {
-                addFragmentCurrentDay(position, city);
+                replaceFragmentCurrentDay(position, city);
             }
         };
 
@@ -49,7 +50,7 @@ public class MainActivity extends BaseActivity {
     }
 
     //    добавляем фрагмент текущего дня
-    public void addFragmentCurrentDay(int startPosition, String savedCity) {
+    public void replaceFragmentCurrentDay(int startPosition, String savedCity) {
         CurrentDayFragment currentDayFragment = CurrentDayFragment.newInstance(startPosition, savedCity);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment_current_day, currentDayFragment).commit();
@@ -58,7 +59,7 @@ public class MainActivity extends BaseActivity {
     }
 
     //    добавляем фрагмент со списком дней
-    public void addFragmentRecyclerView(String savedCity) {
+    public void replaceFragmentRecyclerView(String savedCity) {
         FragmentDaysRecyclerView recyclerViewDayFragment = FragmentDaysRecyclerView.newInstance(savedCity);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment_days_recycler_view, recyclerViewDayFragment).commit();
@@ -106,9 +107,18 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initFragments() {
-        new DaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST).build();
-        addFragmentCurrentDay(startPosition, savedCity);
-        addFragmentRecyclerView(savedCity);
+        boolean result = new DaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST).build();
+        replaceFragmentCurrentDay(startPosition, savedCity);
+        replaceFragmentRecyclerView(savedCity);
+        if (!result) {
+//            Snackbar.make(appbarLayout,
+//                    "рандомное", Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(this,"рандомное",Toast.LENGTH_SHORT).show();
+        } else {
+//            Snackbar.make(appbarLayout,
+//                    "с сайта", Snackbar.LENGTH_SHORT).show();
+            Toast.makeText(this,"с сайта",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
