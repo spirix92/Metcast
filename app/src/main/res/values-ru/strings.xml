@@ -31,5 +31,6 @@
     <string name="start_pressure">800</string>
     <string name="start_humidity">100</string>
     <string name="start_day">Сегодня</string>
+    <string name="cities_menu_delete">Удалить</string>
 
 </resources>

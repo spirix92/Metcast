@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +23,7 @@ public class MainActivity extends BaseActivity {
     private String savedCity;
     private OnItemDayClickListener itemDayClickListener;
     private AppBarLayout appbarLayout;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +31,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.main_toolbar_layout);
         appbarLayout = findViewById(R.id.main_appbar_layout);
+        coordinatorLayout = findViewById(R.id.coordinator_layout);
         setSupportActionBar(toolbar);
         itemDayClickListener = new OnItemDayClickListener() {
             @Override
@@ -67,14 +68,13 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.toolbar_main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator_layout);
 
         if (id == R.id.action_settings) {
             openSettings();
@@ -110,10 +110,10 @@ public class MainActivity extends BaseActivity {
         replaceFragmentCurrentDay(startPosition, savedCity);
         replaceFragmentRecyclerView(savedCity);
         if (!result) {
-            Snackbar.make(appbarLayout,
+            Snackbar.make(coordinatorLayout,
                     "рандомное", Snackbar.LENGTH_SHORT).show();
         } else {
-            Snackbar.make(appbarLayout,
+            Snackbar.make(coordinatorLayout,
                     "с сайта", Snackbar.LENGTH_SHORT).show();
         }
     }

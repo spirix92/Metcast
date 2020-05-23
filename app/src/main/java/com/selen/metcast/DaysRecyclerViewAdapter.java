@@ -61,7 +61,7 @@ public class DaysRecyclerViewAdapter extends RecyclerView.Adapter<DaysRecyclerVi
 
     @Override
     public int getItemCount() {
-        return days.size();
+        return days == null ? 0 : days.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

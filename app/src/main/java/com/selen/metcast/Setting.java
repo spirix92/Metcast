@@ -21,7 +21,6 @@ public class Setting extends BaseActivity {
     private long back_pressed;
     private Switch darkMode;
     private TextInputEditText currentCity;
-    private MaterialButton save;
     private OnItemCityClickListener itemCityClickListener;
 
     @Override
@@ -30,7 +29,7 @@ public class Setting extends BaseActivity {
         setContentView(R.layout.activity_setting);
         darkMode = findViewById(R.id.dark_mode);
         currentCity = findViewById(R.id.input_edit_text);
-        save = findViewById(R.id.save_settings);
+        MaterialButton save = findViewById(R.id.save_settings);
         save.setOnClickListener(saveClick);
         currentCity.setOnKeyListener(selectCityListenerMK);
         currentCity.setOnEditorActionListener(selectCityListenerPK);
@@ -96,15 +95,6 @@ public class Setting extends BaseActivity {
                 .replace(R.id.settings_fragment_city_recycler_view, recyclerViewCityFragment).commit();
     }
 
-    // Интерфейс для обработки нажатий
-    public interface OnItemCityClickListener {
-        void onItemClick(String city);
-    }
-
-    public OnItemCityClickListener getItemCityClickListener() {
-        return itemCityClickListener;
-    }
-
     private void intentCreate(String city) {
         addCity(city);
         setDarkTheme(darkMode.isChecked());
@@ -125,6 +115,15 @@ public class Setting extends BaseActivity {
             }
         }
         if (!cityIsListed) cities.add(city);
+    }
+
+    // Интерфейс для обработки нажатий для выбора города
+    public interface OnItemCityClickListener {
+        void onItemClick(String city);
+    }
+
+    public OnItemCityClickListener getItemCityClickListener() {
+        return itemCityClickListener;
     }
 
 }
