@@ -42,7 +42,9 @@ public class CitiesRecyclerViewAdapter extends RecyclerView.Adapter<CitiesRecycl
     @Override
     public void onBindViewHolder(@NonNull CitiesRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.getCity().setText(cities.get(position));
-        fragment.registerForContextMenu(holder.getItem_city());
+        if (fragment != null) {
+            fragment.registerForContextMenu(holder.getItem_city());
+        }
     }
 
     @Override
@@ -50,7 +52,7 @@ public class CitiesRecyclerViewAdapter extends RecyclerView.Adapter<CitiesRecycl
         return cities == null ? 0 : cities.size();
     }
 
-    void removeCityItem(int position){
+    void removeCityItem(int position) {
         cities.remove(position);
         notifyItemRemoved(position);
     }
@@ -67,23 +69,8 @@ public class CitiesRecyclerViewAdapter extends RecyclerView.Adapter<CitiesRecycl
             super(itemView);
             city = itemView.findViewById(R.id.city);
             item_city = itemView.findViewById(R.id.item_city);
-            item_city.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (itemCityClickListener != null) {
-                        itemCityClickListener.onItemClick(city.getText().toString());
-                    }
-                }
-            });
-
-            item_city.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    menuPosition = getAdapterPosition();
-                    return false;
-                }
-            });
-
+            item_city.setOnClickListener(itemClick);
+            item_city.setOnLongClickListener(itemLongClick);
         }
 
         public TextView getCity() {
@@ -94,6 +81,22 @@ public class CitiesRecyclerViewAdapter extends RecyclerView.Adapter<CitiesRecycl
             return item_city;
         }
 
+        private View.OnClickListener itemClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemCityClickListener != null) {
+                    itemCityClickListener.onItemClick(city.getText().toString());
+                }
+            }
+        };
+
+        private View.OnLongClickListener itemLongClick = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                menuPosition = getAdapterPosition();
+                return false;
+            }
+        };
     }
 
 }
