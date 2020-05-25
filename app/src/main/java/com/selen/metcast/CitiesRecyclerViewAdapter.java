@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.selen.metcast.data.MainSingleton;
@@ -17,10 +18,14 @@ import java.util.List;
 public class CitiesRecyclerViewAdapter extends RecyclerView.Adapter<CitiesRecyclerViewAdapter.ViewHolder> {
 
     private List<String> cities;
+    private Fragment fragment;
     private Setting.OnItemCityClickListener itemCityClickListener;
+    private int menuPosition;
 
-    CitiesRecyclerViewAdapter(Activity activity) {
+
+    CitiesRecyclerViewAdapter(Activity activity, Fragment fragment) {
         cities = MainSingleton.getInstance().getCitiesList();
+        this.fragment = fragment;
         if (activity instanceof Setting) {
             itemCityClickListener = ((Setting) activity).getItemCityClickListener();
         }
@@ -37,33 +42,61 @@ public class CitiesRecyclerViewAdapter extends RecyclerView.Adapter<CitiesRecycl
     @Override
     public void onBindViewHolder(@NonNull CitiesRecyclerViewAdapter.ViewHolder holder, int position) {
         holder.getCity().setText(cities.get(position));
+        if (fragment != null) {
+            fragment.registerForContextMenu(holder.getItem_city());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return cities.size();
+        return cities == null ? 0 : cities.size();
+    }
+
+    void removeCityItem(int position) {
+        cities.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    int getMenuPosition() {
+        return menuPosition;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView city;
+        private FrameLayout item_city;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             city = itemView.findViewById(R.id.city);
-            ConstraintLayout item_city = itemView.findViewById(R.id.item_city);
-            item_city.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (itemCityClickListener != null) {
-                        itemCityClickListener.onItemClick(city.getText().toString());
-                    }
-                }
-            });
+            item_city = itemView.findViewById(R.id.item_city);
+            item_city.setOnClickListener(itemClick);
+            item_city.setOnLongClickListener(itemLongClick);
         }
 
         public TextView getCity() {
             return city;
         }
+
+        public FrameLayout getItem_city() {
+            return item_city;
+        }
+
+        private View.OnClickListener itemClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemCityClickListener != null) {
+                    itemCityClickListener.onItemClick(city.getText().toString());
+                }
+            }
+        };
+
+        private View.OnLongClickListener itemLongClick = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                menuPosition = getAdapterPosition();
+                return false;
+            }
+        };
     }
 
 }

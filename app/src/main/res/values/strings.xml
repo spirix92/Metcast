@@ -3,10 +3,12 @@
     <string name="app_name">Metcast</string>
     <string name="settings">Settings</string>
     <string name="about_the_program">About the program</string>
+    <string name="about_the_program_text">The application is made to demonstrate the capabilities, and not for everyday use.</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="select_city">Select city</string>
     <string name="save_settings">Save</string>
     <string name="exit_without_saving">To exit without saving, double-click back</string>
+    <string name="data_uploaded">Site data uploaded successfully</string>
 
     <!-- Empty heading app -->
     <string name="title_activity_main"></string>
@@ -30,5 +32,15 @@
     <string name="start_pressure">800</string>
     <string name="start_humidity">100</string>
     <string name="start_day">Today</string>
+    <string name="cities_menu_delete">Delete</string>
+
+    <!-- Strings used for create dialog -->
+    <string name="dialog_about_title">About the program</string>
+    <string name="dialog_about_message">The application is made to demonstrate the capabilities, and not for everyday use.</string>
+    <string name="dialog_about_btn_ok">Fine</string>
+    <string name="dialog_random_title">City not found</string>
+    <string name="dialog_random_message">The city you entered is not found, so the data is randomly filled. Want to enter the city in a new way?</string>
+    <string name="dialog_random_btn_ok">Fine</string>
+    <string name="dialog_random_btn_no">No</string>
 
 </resources>

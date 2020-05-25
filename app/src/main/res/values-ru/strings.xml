@@ -4,10 +4,12 @@
     <string name="app_name">Погода</string>
     <string name="settings">Настройки</string>
     <string name="about_the_program">О программе</string>
+    <string name="about_the_program_text">Приложение сделано для демонстрации возможностей, а не для повседневного использования</string>
     <string name="dark_mode">Темная тема</string>
     <string name="select_city">Выберите город</string>
     <string name="save_settings">Сохранить</string>
     <string name="exit_without_saving">Для выхода без сохранения дважды нажмите назад</string>
+    <string name="data_uploaded">Данные с сайта успешно загружены</string>
 
     <!-- Пустой заголовок приложения -->
     <string name="title_activity_main"></string>
@@ -31,5 +33,15 @@
     <string name="start_pressure">800</string>
     <string name="start_humidity">100</string>
     <string name="start_day">Сегодня</string>
+    <string name="cities_menu_delete">Удалить</string>
+
+    <!-- Strings used for create dialog -->
+    <string name="dialog_about_title">О программе</string>
+    <string name="dialog_about_message">Приложение сделано для демонстрации возможностей, а не для повседневного использования</string>
+    <string name="dialog_about_btn_ok">Хорошо</string>
+    <string name="dialog_random_title">Город не найден</string>
+    <string name="dialog_random_message">Введенный город не найден, в связи с этим данные заполнены случайным образом. Хотите ввести город по новой?</string>
+    <string name="dialog_random_btn_ok">Хорошо</string>
+    <string name="dialog_random_btn_no">Нет</string>
 
 </resources>

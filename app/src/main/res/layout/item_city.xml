@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="15dp"
     app:cardElevation="3dp" >
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:id="@+id/item_city"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -19,5 +19,5 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tool:text="@string/start_city" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 </androidx.cardview.widget.CardView>

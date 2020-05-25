@@ -1,12 +1,11 @@
 package com.selen.metcast.data;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 //список всех полученных дней
-public class MainSingleton implements Serializable {
-    private static MainSingleton instance = null;
+public class MainSingleton {
+    private static MainSingleton instance;
     private static final Object syncObj = new Object();
 
     private List<Day> days;
