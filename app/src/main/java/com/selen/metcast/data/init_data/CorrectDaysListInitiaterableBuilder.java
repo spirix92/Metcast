@@ -31,4 +31,8 @@ public class CorrectDaysListInitiaterableBuilder {
     public FragmentsInitiator getFragmentsInitiator() {
         return fragmentsInitiator;
     }
+
+    public void setFragmentsInitiator(FragmentsInitiator fragmentsInitiator) {
+        this.fragmentsInitiator = fragmentsInitiator;
+    }
 }

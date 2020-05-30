@@ -140,6 +140,7 @@ public class MainActivity extends BaseActivity {
                 replaceFragmentRecyclerView(savedCity);
             }
         };
+        builder.setFragmentsInitiator(initiator);
         builder.buildWithAPI();
     }
 
