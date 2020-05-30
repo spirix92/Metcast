@@ -1,10 +1,6 @@
 package com.selen.metcast.data.init_data;
 
-import android.app.Activity;
-import android.widget.Toast;
-
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.snackbar.Snackbar;
+import com.selen.metcast.MainActivity;
 
 public class DaysListInitiaterableBuilder {
     private String city;
@@ -28,7 +24,7 @@ public class DaysListInitiaterableBuilder {
         return result;
     }
 
-    public boolean isCityCorrect(DaysListInitiaterable daysList){
+    private boolean isCityCorrect(DaysListInitiaterable daysList){
         return daysList.checkCity(city);
     }
 }

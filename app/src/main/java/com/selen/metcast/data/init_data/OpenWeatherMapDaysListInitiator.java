@@ -42,7 +42,7 @@ public class OpenWeatherMapDaysListInitiator implements DaysListInitiaterable {
                 Day d = dayGenerator(currentDate, i);
                 if (d == null)
                     throw new NullPointerException("Не удалось получить данные с сервера");
-                dayList.add(dayGenerator(currentDate, i));
+                dayList.add(d);
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
