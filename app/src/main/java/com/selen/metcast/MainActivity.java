@@ -18,7 +18,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.selen.metcast.data.Constants;
 import com.selen.metcast.data.init_data.CorrectDaysListInitiaterableBuilder;
-import com.selen.metcast.data.init_data.DaysListInitiaterableBuilder;
+
 
 public class MainActivity extends BaseActivity {
 
@@ -118,8 +118,7 @@ public class MainActivity extends BaseActivity {
         startActivityForResult(intent, Constants.OPEN_SETTINGS_REQUEST_CODE);
     }
 
-    private void initFragments() {
-        boolean result = new DaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST).build();
+    private void initFragments(boolean result) {
         replaceFragmentCurrentDay(startPosition, savedCity);
         replaceFragmentRecyclerView(savedCity);
         if (!result) {
@@ -131,13 +130,16 @@ public class MainActivity extends BaseActivity {
     }
 
     public void correctInitFragments() {
-        CorrectDaysListInitiaterableBuilder builder = new CorrectDaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST);
+        final CorrectDaysListInitiaterableBuilder builder = new CorrectDaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST);
         initiator = builder.getFragmentsInitiator();
         initiator = new CorrectDaysListInitiaterableBuilder.FragmentsInitiator() {
             @Override
             public void initiateFragments(boolean result) {
-                replaceFragmentCurrentDay(startPosition, savedCity);
-                replaceFragmentRecyclerView(savedCity);
+                if (!result) {
+//                    сгенерировать случайные данные
+                    builder.buildWithRandom();
+                }
+                initFragments(result);
             }
         };
         builder.setFragmentsInitiator(initiator);

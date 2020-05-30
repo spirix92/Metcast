@@ -86,10 +86,26 @@ public class CorrectOpenWeatherMapDaysListInitiator implements CorrectDaysListIn
                             });
                         } else {
 //                            все плохо
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (fragmentsInitiator != null)
+                                        fragmentsInitiator.initiateFragments(false);
+                                }
+                            });
+
                         }
 
                     } catch (IOException e) {
                         e.printStackTrace();
+//                        все совсем плохо
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (fragmentsInitiator != null)
+                                    fragmentsInitiator.initiateFragments(false);
+                            }
+                        });
                     } finally {
                         if (null != urlConnection) {
                             urlConnection.disconnect();

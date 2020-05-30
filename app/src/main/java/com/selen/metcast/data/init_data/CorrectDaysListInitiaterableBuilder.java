@@ -13,13 +13,13 @@ public class CorrectDaysListInitiaterableBuilder {
     //    Если город есть в апи - скачать с сервера. если город введен неверно - сгенерировать рандомно
     public void buildWithAPI() {
         CorrectDaysListInitiaterable daysList = new CorrectOpenWeatherMapDaysListInitiator(fragmentsInitiator);
-        number = 1;
+        int number = 1;
         daysList.initMainSingleton(city, number);
     }
 
     //    Если город введен неверно - сгенерировать рандомно
     public void buildWithRandom() {
-        DaysListInitiaterable daysList = new RandomDaysListInitiator();
+        CorrectDaysListInitiaterable daysList = new CorrectRandomDaysListInitiator();
         daysList.initMainSingleton(city, number);
     }
 
