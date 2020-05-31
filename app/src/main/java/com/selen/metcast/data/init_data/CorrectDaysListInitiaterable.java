@@ -1,6 +1,5 @@
 package com.selen.metcast.data.init_data;
 
-public interface DaysListInitiaterable {
+public interface CorrectDaysListInitiaterable {
     void initMainSingleton(String city, int number);
-    boolean checkCity(String city);
 }

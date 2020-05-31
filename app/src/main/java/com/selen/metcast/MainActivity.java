@@ -17,7 +17,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.selen.metcast.data.Constants;
-import com.selen.metcast.data.init_data.DaysListInitiaterableBuilder;
+import com.selen.metcast.data.init_data.CorrectDaysListInitiaterableBuilder;
+
 
 public class MainActivity extends BaseActivity {
 
@@ -26,6 +27,7 @@ public class MainActivity extends BaseActivity {
     private OnItemDayClickListener itemDayClickListener;
     private AppBarLayout appbarLayout;
     private CoordinatorLayout coordinatorLayout;
+    private CorrectDaysListInitiaterableBuilder.FragmentsInitiator initiator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,8 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState == null) {
             SharedPreferences sharedPref = getSharedPreferences(Constants.NAME_SHARED_PREFERENCE_CITY, MODE_PRIVATE);
             savedCity = sharedPref.getString(Constants.GET_CITY_NAME, getResources().getString(R.string.start_city));
-            initFragments();
+//            initFragments();
+            correctInitFragments();
         } else {
             savedCity = savedInstanceState.getString(Constants.CURRENT_CITY_MAIN_ACTIVITY);
         }
@@ -81,7 +84,8 @@ public class MainActivity extends BaseActivity {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(Constants.GET_CITY_NAME, savedCity);
                 editor.apply();
-                initFragments();
+//                initFragments();
+                correctInitFragments();
             }
         }
     }
@@ -114,8 +118,7 @@ public class MainActivity extends BaseActivity {
         startActivityForResult(intent, Constants.OPEN_SETTINGS_REQUEST_CODE);
     }
 
-    private void initFragments() {
-        boolean result = new DaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST).build();
+    private void initFragments(boolean result) {
         replaceFragmentCurrentDay(startPosition, savedCity);
         replaceFragmentRecyclerView(savedCity);
         if (!result) {
@@ -126,7 +129,24 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void showDialogAboutTheProgram(){
+    public void correctInitFragments() {
+        final CorrectDaysListInitiaterableBuilder builder = new CorrectDaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST);
+        initiator = builder.getFragmentsInitiator();
+        initiator = new CorrectDaysListInitiaterableBuilder.FragmentsInitiator() {
+            @Override
+            public void initiateFragments(boolean result) {
+                if (!result) {
+//                    сгенерировать случайные данные
+                    builder.buildWithRandom();
+                }
+                initFragments(result);
+            }
+        };
+        builder.setFragmentsInitiator(initiator);
+        builder.buildWithAPI();
+    }
+
+    private void showDialogAboutTheProgram() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.dialog_about_title)
                 .setMessage(R.string.dialog_about_message)
@@ -142,7 +162,7 @@ public class MainActivity extends BaseActivity {
         alert.show();
     }
 
-    private void showDialogRandomGenerate(){
+    private void showDialogRandomGenerate() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle(R.string.dialog_random_title)
                 .setMessage(R.string.dialog_random_message)
@@ -154,12 +174,12 @@ public class MainActivity extends BaseActivity {
                                 openSettings();
                             }
                         })
-        .setNegativeButton(R.string.dialog_random_btn_no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+                .setNegativeButton(R.string.dialog_random_btn_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 //                                закрывается и хорошо
-            }
-        });
+                    }
+                });
         AlertDialog alert = builder.create();
         alert.show();
     }

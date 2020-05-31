@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class RandomDaysListInitiator implements DaysListInitiaterable {
+public class CorrectRandomDaysListInitiator implements CorrectDaysListInitiaterable {
 
     //    заполняем синглтон со списком дней данными
     @Override
@@ -20,11 +20,6 @@ public class RandomDaysListInitiator implements DaysListInitiaterable {
         for (int i = 0; i < number; i++) {
             dayList.add(dayGenerator(currentDate, i));
         }
-    }
-
-    @Override
-    public boolean checkCity(String city) {
-        return true;
     }
 
     private Day dayGenerator(GregorianCalendar currentDate, int i) {
