@@ -26,38 +26,18 @@ public class OpenWeatherMapDaysListRetrofitInitiator implements DaysListInitiate
 
     public OpenWeatherMapDaysListRetrofitInitiator(DaysListInitiaterableBuilder.FragmentsInitiator fragmentsInitiator) {
         this.fragmentsInitiator = fragmentsInitiator;
-        initRetorfit();
     }
 
     @Override
     public void initMainSingleton(String city, final int number) {
+        initRetorfit();
         retrofitRequest.loadWeather(city, Constants.WEATHER_UNITS, Constants.WEATHER_API_KEY)
                 .enqueue(new Callback<WeatherRequest>() {
                     @Override
                     public void onResponse(Call<WeatherRequest> call, Response<WeatherRequest> response) {
                         if (response.body() != null && response.isSuccessful()) {
 //                            данные получены
-                            MainSingleton data = MainSingleton.getInstance();
-                            data.clearDaysList();
-                            final List<Day> dayList = data.getDaysList();
-                            final GregorianCalendar currentDate = new GregorianCalendar();
-                            final int finI = 0;
-//                            генерируем дату
-                            GregorianCalendar date = new GregorianCalendar();
-                            gregorianCalendarGenerate(currentDate, date, finI);
-//                            получаем температуру
-                            int temperature = (int) response.body().getMain().getTemp();
-//                            получаем силу ветра
-                            float wind = response.body().getWind().getSpeed();
-//                            получаем давление
-                            int pressure = response.body().getMain().getPressure();
-//                            получаем влажность
-                            int humidity = response.body().getMain().getHumidity();
-//                            получаем атмосферные осадки
-                            Precipitation precipitation = (Precipitation.values())[pictureRequest(response.body().getWeather()[0].getMain())];
-
-                            Day day = new Day(date, temperature, wind, pressure, humidity, precipitation);
-                            dayList.add(day);
+                            addDay(response);
                             if (fragmentsInitiator != null)
                                 fragmentsInitiator.initiateFragments(true);
                         } else {
@@ -76,15 +56,41 @@ public class OpenWeatherMapDaysListRetrofitInitiator implements DaysListInitiate
     }
 
     private void initRetorfit() {
-        Retrofit retrofit;
-        retrofit = new Retrofit.Builder()
-                // Базовая часть адреса
-                .baseUrl(Constants.WEATHER_URL)
-                // Конвертер, необходимый для преобразования JSON в объекты
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        // Создаём объект, при помощи которого будем выполнять запросы
-        retrofitRequest = retrofit.create(RetrofitRequest.class);
+        if (retrofitRequest == null) {
+            Retrofit retrofit;
+            retrofit = new Retrofit.Builder()
+                    // Базовая часть адреса
+                    .baseUrl(Constants.WEATHER_URL)
+                    // Конвертер, необходимый для преобразования JSON в объекты
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            // Создаём объект, при помощи которого будем выполнять запросы
+            retrofitRequest = retrofit.create(RetrofitRequest.class);
+        }
+    }
+
+    private void addDay(Response<WeatherRequest> response) {
+        MainSingleton data = MainSingleton.getInstance();
+        data.clearDaysList();
+        final List<Day> dayList = data.getDaysList();
+        final GregorianCalendar currentDate = new GregorianCalendar();
+        final int finI = 0;
+//                            генерируем дату
+        GregorianCalendar date = new GregorianCalendar();
+        gregorianCalendarGenerate(currentDate, date, finI);
+//                            получаем температуру
+        int temperature = (int) response.body().getMain().getTemp();
+//                            получаем силу ветра
+        float wind = response.body().getWind().getSpeed();
+//                            получаем давление
+        int pressure = response.body().getMain().getPressure();
+//                            получаем влажность
+        int humidity = response.body().getMain().getHumidity();
+//                            получаем атмосферные осадки
+        Precipitation precipitation = (Precipitation.values())[pictureRequest(response.body().getWeather()[0].getMain())];
+
+        Day day = new Day(date, temperature, wind, pressure, humidity, precipitation);
+        dayList.add(day);
     }
 
     private void gregorianCalendarGenerate(GregorianCalendar currentDate, GregorianCalendar date, int number) {
