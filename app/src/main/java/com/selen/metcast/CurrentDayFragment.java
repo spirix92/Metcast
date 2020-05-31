@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.selen.metcast.data.Constants;
 import com.selen.metcast.data.Day;
 import com.selen.metcast.data.MainSingleton;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
@@ -85,7 +86,7 @@ public class CurrentDayFragment extends Fragment {
             ((ImageView) view.findViewById(R.id.current_temperature_picture)).setImageDrawable(day
                     .getPrecipitation().getPicture(view.getResources()));
 
-            ((TextView) view.findViewById(R.id.current_wind)).setText(String.format("%d", day.getWind()));
+            ((TextView) view.findViewById(R.id.current_wind)).setText(String.format("%.2f", day.getWind()));
             ((TextView) view.findViewById(R.id.current_pressure)).setText(String.format("%d", day.getPressure()));
             ((TextView) view.findViewById(R.id.current_humidity)).setText(String.format("%d", day.getHumidity()));
         }

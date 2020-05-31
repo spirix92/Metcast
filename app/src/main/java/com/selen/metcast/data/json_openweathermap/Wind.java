@@ -1,23 +1,29 @@
 package com.selen.metcast.data.json_openweathermap;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Wind {
+    @SerializedName("speed")
+    @Expose
+    private float speed;
+    @SerializedName("deg")
+    @Expose
+    private float deg;
 
-    private int speed;
-    private int deg;
-
-    public int getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(float speed) {
         this.speed = speed;
     }
 
-    public int getDeg() {
+    public float getDeg() {
         return deg;
     }
 
-    public void setDeg(int deg) {
+    public void setDeg(float deg) {
         this.deg = deg;
     }
 }

@@ -1,25 +1,25 @@
 package com.selen.metcast.data.init_data;
 
-public class CorrectDaysListInitiaterableBuilder {
+public class DaysListInitiaterableBuilder {
     private String city;
     private int number;
     private FragmentsInitiator fragmentsInitiator;
 
-    public CorrectDaysListInitiaterableBuilder(String city, int number) {
+    public DaysListInitiaterableBuilder(String city, int number) {
         this.city = city;
         this.number = number;
     }
 
     //    Если город есть в апи - скачать с сервера. если город введен неверно - сгенерировать рандомно
     public void buildWithAPI() {
-        CorrectDaysListInitiaterable daysList = new CorrectOpenWeatherMapDaysListInitiator(fragmentsInitiator);
+        DaysListInitiaterable daysList = new OpenWeatherMapDaysListRetrofitInitiator(fragmentsInitiator);
         int number = 1;
         daysList.initMainSingleton(city, number);
     }
 
     //    Если город введен неверно - сгенерировать рандомно
     public void buildWithRandom() {
-        CorrectDaysListInitiaterable daysList = new CorrectRandomDaysListInitiator();
+        DaysListInitiaterable daysList = new RandomDaysListInitiator();
         daysList.initMainSingleton(city, number);
     }
 

@@ -1,7 +1,11 @@
 package com.selen.metcast.data.json_openweathermap;
 
-public class Clouds {
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
+public class Clouds {
+    @SerializedName("all")
+    @Expose
     private int all;
 
     public int getAll() {

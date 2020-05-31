@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class CorrectRandomDaysListInitiator implements CorrectDaysListInitiaterable {
+public class RandomDaysListInitiator implements DaysListInitiaterable {
 
     //    заполняем синглтон со списком дней данными
     @Override

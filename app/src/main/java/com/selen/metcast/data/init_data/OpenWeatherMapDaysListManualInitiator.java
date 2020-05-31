@@ -22,14 +22,14 @@ import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
 //покачто ключ не выношу за приложение, чтобы было проще проверять
-public class CorrectOpenWeatherMapDaysListInitiator implements CorrectDaysListInitiaterable {
+public class OpenWeatherMapDaysListManualInitiator implements DaysListInitiaterable {
 
     private static final String WEATHER_API_KEY = "d1467727eb1b785602d006f500e8c523";
 
-    private CorrectDaysListInitiaterableBuilder.FragmentsInitiator fragmentsInitiator;
+    private DaysListInitiaterableBuilder.FragmentsInitiator fragmentsInitiator;
     private String city;
 
-    public CorrectOpenWeatherMapDaysListInitiator(CorrectDaysListInitiaterableBuilder.FragmentsInitiator fragmentsInitiator) {
+    public OpenWeatherMapDaysListManualInitiator(DaysListInitiaterableBuilder.FragmentsInitiator fragmentsInitiator) {
         this.fragmentsInitiator = fragmentsInitiator;
     }
 
@@ -67,7 +67,7 @@ public class CorrectOpenWeatherMapDaysListInitiator implements CorrectDaysListIn
 //        получаем температуру
                             int temperature = (int) weatherRequest.getMain().getTemp();
 //        получаем силу ветра
-                            int wind = weatherRequest.getWind().getSpeed();
+                            float wind = weatherRequest.getWind().getSpeed();
 //        получаем давление
                             int pressure = weatherRequest.getMain().getPressure();
 //        получаем влажность
