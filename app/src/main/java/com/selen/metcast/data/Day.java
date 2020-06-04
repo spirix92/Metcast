@@ -8,7 +8,7 @@ public class Day {
     //    текущая температура
     private int temperature;
     //    текущая сила ветра
-    private int wind;
+    private float wind;
     //    текущее давление
     private int pressure;
     //    текущая влажность
@@ -16,7 +16,7 @@ public class Day {
     //    Атмосферные осадки
     private Precipitation precipitation;
 
-    public Day(GregorianCalendar date, int temperature, int wind, int pressure, int humidity, Precipitation precipitation) {
+    public Day(GregorianCalendar date, int temperature, float wind, int pressure, int humidity, Precipitation precipitation) {
         this.date = date;
         this.temperature = temperature;
         this.wind = wind;
@@ -33,7 +33,7 @@ public class Day {
         return temperature;
     }
 
-    public int getWind() {
+    public float getWind() {
         return wind;
     }
 

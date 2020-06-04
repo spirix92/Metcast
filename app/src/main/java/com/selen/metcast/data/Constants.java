@@ -19,6 +19,10 @@ public interface Constants {
 
     int DAYS_IN_LIST = 30;
 
+    String WEATHER_URL = "https://api.openweathermap.org/";
+    String WEATHER_UNITS = "metric";
+    String WEATHER_API_KEY = "d1467727eb1b785602d006f500e8c523";
+
     String WEATHER_URL_START = "https://api.openweathermap.org/data/2.5/weather?q=";
     String WEATHER_URL_END = "&units=metric&lang=ru&appid=";
 

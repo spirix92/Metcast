@@ -17,7 +17,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.selen.metcast.data.Constants;
-import com.selen.metcast.data.init_data.CorrectDaysListInitiaterableBuilder;
+import com.selen.metcast.data.init_data.DaysListInitiaterableBuilder;
 
 
 public class MainActivity extends BaseActivity {
@@ -27,7 +27,7 @@ public class MainActivity extends BaseActivity {
     private OnItemDayClickListener itemDayClickListener;
     private AppBarLayout appbarLayout;
     private CoordinatorLayout coordinatorLayout;
-    private CorrectDaysListInitiaterableBuilder.FragmentsInitiator initiator;
+    private DaysListInitiaterableBuilder.FragmentsInitiator initiator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +47,7 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState == null) {
             SharedPreferences sharedPref = getSharedPreferences(Constants.NAME_SHARED_PREFERENCE_CITY, MODE_PRIVATE);
             savedCity = sharedPref.getString(Constants.GET_CITY_NAME, getResources().getString(R.string.start_city));
-//            initFragments();
-            correctInitFragments();
+            initFragments();
         } else {
             savedCity = savedInstanceState.getString(Constants.CURRENT_CITY_MAIN_ACTIVITY);
         }
@@ -84,8 +83,7 @@ public class MainActivity extends BaseActivity {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(Constants.GET_CITY_NAME, savedCity);
                 editor.apply();
-//                initFragments();
-                correctInitFragments();
+                initFragments();
             }
         }
     }
@@ -118,7 +116,7 @@ public class MainActivity extends BaseActivity {
         startActivityForResult(intent, Constants.OPEN_SETTINGS_REQUEST_CODE);
     }
 
-    private void initFragments(boolean result) {
+    private void replaceFragments(boolean result) {
         replaceFragmentCurrentDay(startPosition, savedCity);
         replaceFragmentRecyclerView(savedCity);
         if (!result) {
@@ -129,17 +127,17 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void correctInitFragments() {
-        final CorrectDaysListInitiaterableBuilder builder = new CorrectDaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST);
+    public void initFragments() {
+        final DaysListInitiaterableBuilder builder = new DaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST);
         initiator = builder.getFragmentsInitiator();
-        initiator = new CorrectDaysListInitiaterableBuilder.FragmentsInitiator() {
+        initiator = new DaysListInitiaterableBuilder.FragmentsInitiator() {
             @Override
             public void initiateFragments(boolean result) {
                 if (!result) {
 //                    сгенерировать случайные данные
                     builder.buildWithRandom();
                 }
-                initFragments(result);
+                replaceFragments(result);
             }
         };
         builder.setFragmentsInitiator(initiator);
