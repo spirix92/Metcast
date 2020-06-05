@@ -12,21 +12,26 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.selen.metcast.data.Constants;
-import com.selen.metcast.data.MainSingleton;
+import com.selen.metcast.data.database.App;
+import com.selen.metcast.data.database.CitiesDao;
+import com.selen.metcast.data.database.CitiesSource;
+import com.selen.metcast.data.database.City;
 
 import java.util.List;
 
-public class Setting extends BaseActivity {
+public class SettingActivity extends BaseActivity {
 
     private long back_pressed;
     private Switch darkMode;
     private TextInputEditText currentCity;
     private OnItemCityClickListener itemCityClickListener;
+    private CitiesSource citiesSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        initCitiesSources();
         darkMode = findViewById(R.id.dark_mode);
         currentCity = findViewById(R.id.input_edit_text);
         MaterialButton save = findViewById(R.id.save_settings);
@@ -95,35 +100,46 @@ public class Setting extends BaseActivity {
                 .replace(R.id.settings_fragment_city_recycler_view, recyclerViewCityFragment).commit();
     }
 
-    private void intentCreate(String city) {
-        addCity(city);
+    private void intentCreate(String cityName) {
+        addCity(cityName);
         setDarkTheme(darkMode.isChecked());
         recreate();
         Intent intent = new Intent();
-        intent.putExtra(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY, city);
+        intent.putExtra(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY, cityName);
         setResult(RESULT_OK, intent);
         finish();
     }
 
-    private void addCity(String city) {
-        List<String> cities = MainSingleton.getInstance().getCitiesList();
+
+    private void addCity(String cityName) {
+        List<City> cities = citiesSource.getCities();
         boolean cityIsListed = false;
-        for (String s : cities) {
-            if (city.equals(s)) {
+        for (City s : cities) {
+            if (cityName.equals(s.cityName)) {
                 cityIsListed = true;
                 break;
             }
         }
-        if (!cityIsListed) cities.add(city);
+        City city = new City();
+        city.cityName = cityName;
+        if (!cityIsListed) citiesSource.addCities(city);
     }
 
     // Интерфейс для обработки нажатий для выбора города
     public interface OnItemCityClickListener {
-        void onItemClick(String city);
+        void onItemClick(String cityName);
     }
 
     public OnItemCityClickListener getItemCityClickListener() {
         return itemCityClickListener;
+    }
+
+    private void initCitiesSources(){
+        CitiesDao citiesDao = App
+                .getInstance()
+                .getCitiesDao();
+
+        citiesSource = new CitiesSource(citiesDao);
     }
 
 }
