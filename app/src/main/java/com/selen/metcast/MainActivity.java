@@ -60,9 +60,21 @@ public class MainActivity extends BaseActivity {
         }
 
         initNotificationChannel();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         airplaneReceiver = new AirplaneReceiver(getString(R.string.broadcast_airplane_text),
                 getString(R.string.broadcast_airplane));
         registerReceiver(airplaneReceiver, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (airplaneReceiver !=null)
+            unregisterReceiver(airplaneReceiver);
     }
 
     @Override
@@ -106,12 +118,6 @@ public class MainActivity extends BaseActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(Constants.CURRENT_CITY_MAIN_ACTIVITY, savedCity);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(airplaneReceiver);
     }
 
     //    добавляем фрагмент текущего дня
