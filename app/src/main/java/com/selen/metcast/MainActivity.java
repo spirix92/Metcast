@@ -112,7 +112,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void openSettings() {
-        Intent intent = new Intent(getApplicationContext(), Setting.class);
+        Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
         startActivityForResult(intent, Constants.OPEN_SETTINGS_REQUEST_CODE);
     }
 

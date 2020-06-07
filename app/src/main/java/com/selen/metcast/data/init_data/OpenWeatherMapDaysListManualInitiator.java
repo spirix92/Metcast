@@ -24,8 +24,6 @@ import javax.net.ssl.HttpsURLConnection;
 //покачто ключ не выношу за приложение, чтобы было проще проверять
 public class OpenWeatherMapDaysListManualInitiator implements DaysListInitiaterable {
 
-    private static final String WEATHER_API_KEY = "d1467727eb1b785602d006f500e8c523";
-
     private DaysListInitiaterableBuilder.FragmentsInitiator fragmentsInitiator;
     private String city;
 
@@ -43,7 +41,7 @@ public class OpenWeatherMapDaysListManualInitiator implements DaysListInitiatera
         final int finI = 0;
 
         try {
-            final URL uri = new URL(Constants.WEATHER_URL_START + city + Constants.WEATHER_URL_END + WEATHER_API_KEY);
+            final URL uri = new URL(Constants.WEATHER_URL_START + city + Constants.WEATHER_URL_END + Constants.WEATHER_API_KEY);
             final Handler handler = new Handler();
             new Thread(new Runnable() {
                 @Override

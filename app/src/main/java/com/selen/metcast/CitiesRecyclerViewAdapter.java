@@ -11,23 +11,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.selen.metcast.data.MainSingleton;
-
-import java.util.List;
+import com.selen.metcast.data.database.CitiesSource;
 
 public class CitiesRecyclerViewAdapter extends RecyclerView.Adapter<CitiesRecyclerViewAdapter.ViewHolder> {
 
-    private List<String> cities;
     private Fragment fragment;
-    private Setting.OnItemCityClickListener itemCityClickListener;
+    private SettingActivity.OnItemCityClickListener itemCityClickListener;
     private int menuPosition;
+    private CitiesSource citiesSource;
 
 
-    CitiesRecyclerViewAdapter(Activity activity, Fragment fragment) {
-        cities = MainSingleton.getInstance().getCitiesList();
+    CitiesRecyclerViewAdapter(Activity activity, Fragment fragment, CitiesSource citiesSource) {
         this.fragment = fragment;
-        if (activity instanceof Setting) {
-            itemCityClickListener = ((Setting) activity).getItemCityClickListener();
+        this.citiesSource = citiesSource;
+        if (activity instanceof SettingActivity) {
+            itemCityClickListener = ((SettingActivity) activity).getItemCityClickListener();
         }
     }
 
@@ -41,7 +39,7 @@ public class CitiesRecyclerViewAdapter extends RecyclerView.Adapter<CitiesRecycl
 
     @Override
     public void onBindViewHolder(@NonNull CitiesRecyclerViewAdapter.ViewHolder holder, int position) {
-        holder.getCity().setText(cities.get(position));
+        holder.getCity().setText(citiesSource.getCities().get(position).cityName);
         if (fragment != null) {
             fragment.registerForContextMenu(holder.getItem_city());
         }
@@ -49,11 +47,11 @@ public class CitiesRecyclerViewAdapter extends RecyclerView.Adapter<CitiesRecycl
 
     @Override
     public int getItemCount() {
-        return cities == null ? 0 : cities.size();
+        return citiesSource == null ? 0 : (int) citiesSource.getCountCities();
     }
 
     void removeCityItem(int position) {
-        cities.remove(position);
+        citiesSource.removeCity(citiesSource.getCities().get(position));
         notifyItemRemoved(position);
     }
 

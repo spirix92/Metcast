@@ -16,19 +16,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.selen.metcast.data.MainSingleton;
-
-import java.util.List;
+import com.selen.metcast.data.database.App;
+import com.selen.metcast.data.database.CitiesDao;
+import com.selen.metcast.data.database.CitiesSource;
 
 public class CityListFragment extends Fragment {
 
-    private List<String> cities;
     private CitiesRecyclerViewAdapter adapter;
+    private CitiesSource citiesSource;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        cities = MainSingleton.getInstance().getCitiesList();
     }
 
     @Override
@@ -44,8 +43,9 @@ public class CityListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         recyclerView.setLayoutManager(layoutManager);
+        initCitiesSources();
 
-        adapter = new CitiesRecyclerViewAdapter(requireActivity(), this);
+        adapter = new CitiesRecyclerViewAdapter(requireActivity(), this, citiesSource);
         DividerItemDecoration itemDecoration = new DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL);
         itemDecoration.setDrawable(view.getResources().getDrawable(R.drawable.separator));
         recyclerView.addItemDecoration(itemDecoration);
@@ -68,6 +68,13 @@ public class CityListFragment extends Fragment {
             adapter.removeCityItem(adapter.getMenuPosition());
         }
         return super.onContextItemSelected(item);
+    }
+
+    private void initCitiesSources(){
+        CitiesDao citiesDao = App
+                .getInstance()
+                .getCitiesDao();
+        citiesSource = new CitiesSource(citiesDao);
     }
 
 }
