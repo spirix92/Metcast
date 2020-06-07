@@ -35,4 +35,11 @@ public interface Constants {
 //    data.database
     String CITY_NAME = "city name";
     String CITIES_DATABASE = "cities database";
+
+//    broadcast
+    String NOTIFICATION_CHANNEL = "2";
+    String ACTION_SEND_MSG = "com.selen.metcast.broadcastmessage";
+    String STORM_NAME_MSG_TITLE = "storm broadcast message title";
+    String STORM_NAME_MSG = "storm broadcast message";
+    int FLAG_RECEIVER_INCLUDE_BACKGROUND = 0x01000000;
 }
