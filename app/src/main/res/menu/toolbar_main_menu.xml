@@ -7,6 +7,13 @@
         android:orderInCategory="10"
         android:title="@string/settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_broadcast_storm"
+        android:orderInCategory="15"
+        android:title="@string/broadcast_storm"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/action_about_the_program"
         android:orderInCategory="20"

@@ -9,6 +9,10 @@
     <string name="save_settings">Save</string>
     <string name="exit_without_saving">To exit without saving, double-click back</string>
     <string name="data_uploaded">Site data uploaded successfully</string>
+    <string name="broadcast_storm">Broadcast storm message</string>
+    <string name="broadcast_storm_text">Storm message</string>
+    <string name="broadcast_airplane">Broadcast airplane message</string>
+    <string name="broadcast_airplane_text">Airplane message</string>
 
     <!-- Empty heading app -->
     <string name="title_activity_main"></string>

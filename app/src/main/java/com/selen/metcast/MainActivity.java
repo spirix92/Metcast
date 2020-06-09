@@ -1,10 +1,16 @@
 package com.selen.metcast;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +34,7 @@ public class MainActivity extends BaseActivity {
     private AppBarLayout appbarLayout;
     private CoordinatorLayout coordinatorLayout;
     private DaysListInitiaterableBuilder.FragmentsInitiator initiator;
+    private AirplaneReceiver airplaneReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +59,22 @@ public class MainActivity extends BaseActivity {
             savedCity = savedInstanceState.getString(Constants.CURRENT_CITY_MAIN_ACTIVITY);
         }
 
+        initNotificationChannel();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        airplaneReceiver = new AirplaneReceiver(getString(R.string.broadcast_airplane_text),
+                getString(R.string.broadcast_airplane));
+        registerReceiver(airplaneReceiver, new IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (airplaneReceiver !=null)
+            unregisterReceiver(airplaneReceiver);
     }
 
     @Override
@@ -66,6 +89,9 @@ public class MainActivity extends BaseActivity {
 
         if (id == R.id.action_settings) {
             openSettings();
+        }
+        if (id == R.id.action_broadcast_storm) {
+            sendBroadcastStorm();
         }
         if (id == R.id.action_about_the_program) {
             showDialogAboutTheProgram();
@@ -82,7 +108,7 @@ public class MainActivity extends BaseActivity {
                 SharedPreferences sharedPref = getSharedPreferences(Constants.NAME_SHARED_PREFERENCE_CITY, MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(Constants.GET_CITY_NAME, savedCity);
-                editor.apply();
+                editor.commit();
                 initFragments();
             }
         }
@@ -93,7 +119,6 @@ public class MainActivity extends BaseActivity {
         super.onSaveInstanceState(outState);
         outState.putString(Constants.CURRENT_CITY_MAIN_ACTIVITY, savedCity);
     }
-
 
     //    добавляем фрагмент текущего дня
     public void replaceFragmentCurrentDay(int startPosition, String savedCity) {
@@ -180,6 +205,29 @@ public class MainActivity extends BaseActivity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    //    отправить тестовое широковещательное сообщение о штормовом предупреждении
+    @SuppressLint("WrongConstant")
+    private void sendBroadcastStorm() {
+        String msg = getString(R.string.broadcast_storm_text);
+        String msgTitle = getString(R.string.broadcast_storm);
+        Intent intent = new Intent();
+        intent.setAction(Constants.ACTION_SEND_MSG);
+        intent.putExtra(Constants.STORM_NAME_MSG, msg);
+        intent.putExtra(Constants.STORM_NAME_MSG_TITLE, msgTitle);
+        intent.addFlags(Constants.FLAG_RECEIVER_INCLUDE_BACKGROUND);
+        sendBroadcast(intent);
+    }
+
+    // инициализация канала нотификаций
+    private void initNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel(Constants.NOTIFICATION_CHANNEL, "name", importance);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     // Интерфейс для обработки нажатий

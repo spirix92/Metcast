@@ -10,6 +10,10 @@
     <string name="save_settings">Сохранить</string>
     <string name="exit_without_saving">Для выхода без сохранения дважды нажмите назад</string>
     <string name="data_uploaded">Данные с сайта успешно загружены</string>
+    <string name="broadcast_storm">Бродкаст штормовое предупреждение</string>
+    <string name="broadcast_storm_text">Штормовое предупреждение</string>
+    <string name="broadcast_airplane">Бродкаст режим в самолете</string>
+    <string name="broadcast_airplane_text">Режим в самолете</string>
 
     <!-- Пустой заголовок приложения -->
     <string name="title_activity_main"></string>
