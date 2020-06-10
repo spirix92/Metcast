@@ -54,7 +54,8 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState == null) {
             SharedPreferences sharedPref = getSharedPreferences(Constants.NAME_SHARED_PREFERENCE_CITY, MODE_PRIVATE);
             savedCity = sharedPref.getString(Constants.GET_CITY_NAME, getResources().getString(R.string.start_city));
-            initFragments();
+            boolean isGPS = savedCity.equals(getString(R.string.current_gps_city));
+            initFragments(isGPS);
         } else {
             savedCity = savedInstanceState.getString(Constants.CURRENT_CITY_MAIN_ACTIVITY);
         }
@@ -73,7 +74,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (airplaneReceiver !=null)
+        if (airplaneReceiver != null)
             unregisterReceiver(airplaneReceiver);
     }
 
@@ -105,11 +106,12 @@ public class MainActivity extends BaseActivity {
         if (requestCode == Constants.OPEN_SETTINGS_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 savedCity = data.getStringExtra(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY);
+                boolean isGPS = data.getBooleanExtra(Constants.PUT_CURRENT_CITY_GPS_REQUEST, false);
                 SharedPreferences sharedPref = getSharedPreferences(Constants.NAME_SHARED_PREFERENCE_CITY, MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(Constants.GET_CITY_NAME, savedCity);
                 editor.commit();
-                initFragments();
+                initFragments(isGPS);
             }
         }
     }
@@ -152,9 +154,10 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void initFragments() {
-        final DaysListInitiaterableBuilder builder = new DaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST);
-        initiator = builder.getFragmentsInitiator();
+    public void initFragments(boolean isGPS) {
+        final DaysListInitiaterableBuilder builder = (isGPS) ?
+                new DaysListInitiaterableBuilder(35, 139, Constants.DAYS_IN_LIST) :
+                new DaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST);
         initiator = new DaysListInitiaterableBuilder.FragmentsInitiator() {
             @Override
             public void initiateFragments(boolean result) {
@@ -166,7 +169,11 @@ public class MainActivity extends BaseActivity {
             }
         };
         builder.setFragmentsInitiator(initiator);
-        builder.buildWithAPI();
+
+        if (isGPS)
+            builder.buildWithAPIGPS();
+        else
+            builder.buildWithAPI();
     }
 
     private void showDialogAboutTheProgram() {

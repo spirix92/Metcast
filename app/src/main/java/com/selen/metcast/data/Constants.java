@@ -5,6 +5,7 @@ public interface Constants {
     String CURRENT_DAY_POSITION_IN_LIST = "current day in list";
     String CURRENT_DAY_POSITION_MAIN_ACTIVITY = "current day main activity";
     String PUT_CURRENT_CITY_MAIN_ACTIVITY = "put current city main activity";
+    String PUT_CURRENT_CITY_GPS_REQUEST = "put current city gps request";
 
     //    Precipitation
     String CLEAR = "clear";

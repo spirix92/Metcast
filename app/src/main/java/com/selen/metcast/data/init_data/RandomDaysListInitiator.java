@@ -22,6 +22,11 @@ public class RandomDaysListInitiator implements DaysListInitiaterable {
         }
     }
 
+    @Override
+    public void initMainSingletonWithGPS(float lat, float lon, int number) {
+        return;
+    }
+
     private Day dayGenerator(GregorianCalendar currentDate, int i) {
 //        генерируем дату
         GregorianCalendar date = new GregorianCalendar();

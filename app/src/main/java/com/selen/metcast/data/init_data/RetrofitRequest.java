@@ -11,4 +11,10 @@ public interface RetrofitRequest {
     Call<WeatherRequest> loadWeather(@Query("q") String cityCountry,
                                      @Query("units") String units,
                                      @Query("appid") String keyApi);
+
+    @GET("data/2.5/weather")
+    Call<WeatherRequest> loadWeatherGPS(@Query("lat") float lat,
+                                        @Query("lon") float lon,
+                                        @Query("units") String units,
+                                        @Query("appid") String keyApi);
 }

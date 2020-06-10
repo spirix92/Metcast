@@ -1,6 +1,7 @@
 package com.selen.metcast.data.init_data;
 
 import android.os.Handler;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.selen.metcast.data.Constants;
@@ -115,6 +116,11 @@ public class OpenWeatherMapDaysListManualInitiator implements DaysListInitiatera
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void initMainSingletonWithGPS(float lat, float lon, int number) {
+        return;
     }
 
     private String getLines(BufferedReader in) throws IOException {
