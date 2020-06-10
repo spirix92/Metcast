@@ -242,7 +242,7 @@ public class MainActivity extends BaseActivity {
         sendBroadcast(intent);
     }
 
-    // инициализация канала нотификаций
+    //    инициализация канала нотификаций
     private void initNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -252,9 +252,8 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-//    Запрашиваем Permission’ы
+    //    Запрашиваем Permission’ы
     private void requestPemissions() {
-        // Проверим, есть ли Permission’ы, и если их нет, запрашиваем их у пользователя
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // Запрашиваем координаты
@@ -265,10 +264,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-//    Запрашиваем Permission’ы для геолокации
+    //    Запрашиваем Permission’ы для геолокации
     private void requestLocationPermissions() {
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)) {
-            // Запрашиваем эти два Permission’а у пользователя
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
             ActivityCompat.requestPermissions(this,
                     new String[]{
                             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -277,7 +275,8 @@ public class MainActivity extends BaseActivity {
                     PERMISSION_REQUEST_CODE);
         }
     }
-    // Результат запроса Permission’а у пользователя:
+
+    //    Результат запроса Permission’а у пользователя:
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
@@ -308,12 +307,15 @@ public class MainActivity extends BaseActivity {
                 lat = (float) location.getLatitude();
                 lon = (float) location.getLongitude();
             }
+
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
             }
+
             @Override
             public void onProviderEnabled(String provider) {
             }
+
             @Override
             public void onProviderDisabled(String provider) {
             }
