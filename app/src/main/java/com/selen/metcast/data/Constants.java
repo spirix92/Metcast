@@ -5,6 +5,7 @@ public interface Constants {
     String CURRENT_DAY_POSITION_IN_LIST = "current day in list";
     String CURRENT_DAY_POSITION_MAIN_ACTIVITY = "current day main activity";
     String PUT_CURRENT_CITY_MAIN_ACTIVITY = "put current city main activity";
+    String PUT_CURRENT_CITY_GPS_REQUEST = "put current city gps request";
 
     //    Precipitation
     String CLEAR = "clear";
@@ -21,6 +22,7 @@ public interface Constants {
     String GET_CITY_NAME = "get city name";
     int OPEN_SETTINGS_REQUEST_CODE = 942;
     int DAYS_IN_LIST = 30;
+    int PERMISSION_REQUEST_CODE = 10;
     String CURRENT_CITY_MAIN_ACTIVITY = "current city main activity";
 
 //    OpenWeatherMapDaysListManualInitiator

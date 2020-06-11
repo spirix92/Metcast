@@ -55,6 +55,33 @@ public class OpenWeatherMapDaysListRetrofitInitiator implements DaysListInitiate
                 });
     }
 
+    @Override
+    public void initMainSingletonWithGPS(float lat, float lon, int number) {
+        initRetorfit();
+        retrofitRequest.loadWeatherGPS(lat, lon, Constants.WEATHER_UNITS, Constants.WEATHER_API_KEY)
+                .enqueue(new Callback<WeatherRequest>() {
+                    @Override
+                    public void onResponse(Call<WeatherRequest> call, Response<WeatherRequest> response) {
+                        if (response.body() != null && response.isSuccessful()) {
+//                            данные получены
+                            addDay(response);
+                            if (fragmentsInitiator != null)
+                                fragmentsInitiator.initiateFragments(true);
+                        } else {
+//                            данные не получены
+                            if (fragmentsInitiator != null)
+                                fragmentsInitiator.initiateFragments(false);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<WeatherRequest> call, Throwable t) {
+                        if (fragmentsInitiator != null)
+                            fragmentsInitiator.initiateFragments(false);
+                    }
+                });
+    }
+
     private void initRetorfit() {
         if (retrofitRequest == null) {
             Retrofit retrofit;

@@ -1,5 +1,6 @@
 package com.selen.metcast;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
@@ -9,7 +10,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,11 +25,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.selen.metcast.data.Constants;
 import com.selen.metcast.data.init_data.DaysListInitiaterableBuilder;
+
+import static com.selen.metcast.data.Constants.PERMISSION_REQUEST_CODE;
 
 
 public class MainActivity extends BaseActivity {
@@ -35,6 +44,8 @@ public class MainActivity extends BaseActivity {
     private CoordinatorLayout coordinatorLayout;
     private DaysListInitiaterableBuilder.FragmentsInitiator initiator;
     private AirplaneReceiver airplaneReceiver;
+    float lat;
+    float lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +65,8 @@ public class MainActivity extends BaseActivity {
         if (savedInstanceState == null) {
             SharedPreferences sharedPref = getSharedPreferences(Constants.NAME_SHARED_PREFERENCE_CITY, MODE_PRIVATE);
             savedCity = sharedPref.getString(Constants.GET_CITY_NAME, getResources().getString(R.string.start_city));
-            initFragments();
+            boolean isGPS = savedCity.equals(getString(R.string.current_gps_city));
+            initFragments(isGPS);
         } else {
             savedCity = savedInstanceState.getString(Constants.CURRENT_CITY_MAIN_ACTIVITY);
         }
@@ -73,7 +85,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (airplaneReceiver !=null)
+        if (airplaneReceiver != null)
             unregisterReceiver(airplaneReceiver);
     }
 
@@ -105,11 +117,12 @@ public class MainActivity extends BaseActivity {
         if (requestCode == Constants.OPEN_SETTINGS_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 savedCity = data.getStringExtra(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY);
+                boolean isGPS = data.getBooleanExtra(Constants.PUT_CURRENT_CITY_GPS_REQUEST, false);
                 SharedPreferences sharedPref = getSharedPreferences(Constants.NAME_SHARED_PREFERENCE_CITY, MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(Constants.GET_CITY_NAME, savedCity);
                 editor.commit();
-                initFragments();
+                initFragments(isGPS);
             }
         }
     }
@@ -152,9 +165,14 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void initFragments() {
-        final DaysListInitiaterableBuilder builder = new DaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST);
-        initiator = builder.getFragmentsInitiator();
+    public void initFragments(boolean isGPS) {
+        final DaysListInitiaterableBuilder builder;
+        if (isGPS) {
+            requestPemissions();
+            builder = new DaysListInitiaterableBuilder(lat, lon, Constants.DAYS_IN_LIST);
+        } else {
+            builder = new DaysListInitiaterableBuilder(savedCity, Constants.DAYS_IN_LIST);
+        }
         initiator = new DaysListInitiaterableBuilder.FragmentsInitiator() {
             @Override
             public void initiateFragments(boolean result) {
@@ -166,7 +184,11 @@ public class MainActivity extends BaseActivity {
             }
         };
         builder.setFragmentsInitiator(initiator);
-        builder.buildWithAPI();
+
+        if (isGPS)
+            builder.buildWithAPIGPS();
+        else
+            builder.buildWithAPI();
     }
 
     private void showDialogAboutTheProgram() {
@@ -220,7 +242,7 @@ public class MainActivity extends BaseActivity {
         sendBroadcast(intent);
     }
 
-    // инициализация канала нотификаций
+    //    инициализация канала нотификаций
     private void initNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -228,6 +250,76 @@ public class MainActivity extends BaseActivity {
             NotificationChannel channel = new NotificationChannel(Constants.NOTIFICATION_CHANNEL, "name", importance);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    //    Запрашиваем Permission’ы
+    private void requestPemissions() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // Запрашиваем координаты
+            requestLocation();
+        } else {
+            // Permission’ов нет, запрашиваем их у пользователя
+            requestLocationPermissions();
+        }
+    }
+
+    //    Запрашиваем Permission’ы для геолокации
+    private void requestLocationPermissions() {
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    },
+                    PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    //    Результат запроса Permission’а у пользователя:
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            // Permission
+            if (grantResults.length == 2 &&
+                    (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+                // Все препоны пройдены и пермиссия дана
+                // Запросим координаты
+                requestLocation();
+            }
+        }
+    }
+
+    // Запрашиваем координаты
+    private void requestLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            return;
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
+
+        String provider = locationManager.getBestProvider(criteria, true);
+        locationManager.requestSingleUpdate(provider, new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                lat = (float) location.getLatitude();
+                lon = (float) location.getLongitude();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+            }
+        }, getMainLooper());
     }
 
     // Интерфейс для обработки нажатий

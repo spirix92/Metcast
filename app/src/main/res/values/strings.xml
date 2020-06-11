@@ -7,6 +7,8 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="select_city">Select city</string>
     <string name="save_settings">Save</string>
+    <string name="current_gps_request">For current gps request</string>
+    <string name="current_gps_city">Current gps result</string>
     <string name="exit_without_saving">To exit without saving, double-click back</string>
     <string name="data_uploaded">Site data uploaded successfully</string>
     <string name="broadcast_storm">Broadcast storm message</string>

@@ -36,6 +36,8 @@ public class SettingActivity extends BaseActivity {
         currentCity = findViewById(R.id.input_edit_text);
         MaterialButton save = findViewById(R.id.save_settings);
         save.setOnClickListener(saveClick);
+        MaterialButton currentGPSRequest = findViewById(R.id.current_gps_request);
+        currentGPSRequest.setOnClickListener(gpsClick);
         currentCity.setOnKeyListener(selectCityListenerMK);
         currentCity.setOnEditorActionListener(selectCityListenerPK);
         replaceFragmentCityRecyclerView();
@@ -43,7 +45,7 @@ public class SettingActivity extends BaseActivity {
         itemCityClickListener = new OnItemCityClickListener() {
             @Override
             public void onItemClick(String city) {
-                intentCreate(city);
+                intentCreate(city, false);
             }
         };
 
@@ -63,7 +65,13 @@ public class SettingActivity extends BaseActivity {
     private View.OnClickListener saveClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            intentCreate(currentCity.getText().toString());
+            intentCreate(currentCity.getText().toString(), false);
+        }
+    };
+    private View.OnClickListener gpsClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            intentCreate(getString(R.string.current_gps_city), true);
         }
     };
 
@@ -73,7 +81,7 @@ public class SettingActivity extends BaseActivity {
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             boolean result = false;
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                intentCreate(currentCity.getText().toString());
+                intentCreate(currentCity.getText().toString(), false);
                 result = true;
             }
             return result;
@@ -86,7 +94,7 @@ public class SettingActivity extends BaseActivity {
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
             boolean result = false;
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                intentCreate(currentCity.getText().toString());
+                intentCreate(currentCity.getText().toString(), false);
                 result = true;
             }
             return result;
@@ -100,12 +108,14 @@ public class SettingActivity extends BaseActivity {
                 .replace(R.id.settings_fragment_city_recycler_view, recyclerViewCityFragment).commit();
     }
 
-    private void intentCreate(String cityName) {
-        addCity(cityName);
+    private void intentCreate(String cityName, boolean isGPS) {
+        if (!isGPS)
+            addCity(cityName);
         setDarkTheme(darkMode.isChecked());
         recreate();
         Intent intent = new Intent();
         intent.putExtra(Constants.PUT_CURRENT_CITY_MAIN_ACTIVITY, cityName);
+        intent.putExtra(Constants.PUT_CURRENT_CITY_GPS_REQUEST, isGPS);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -134,7 +144,7 @@ public class SettingActivity extends BaseActivity {
         return itemCityClickListener;
     }
 
-    private void initCitiesSources(){
+    private void initCitiesSources() {
         CitiesDao citiesDao = App
                 .getInstance()
                 .getCitiesDao();

@@ -8,6 +8,8 @@
     <string name="dark_mode">Темная тема</string>
     <string name="select_city">Выберите город</string>
     <string name="save_settings">Сохранить</string>
+    <string name="current_gps_request">По текущим gps координатам</string>
+    <string name="current_gps_city">Текущий город по gps</string>
     <string name="exit_without_saving">Для выхода без сохранения дважды нажмите назад</string>
     <string name="data_uploaded">Данные с сайта успешно загружены</string>
     <string name="broadcast_storm">Бродкаст штормовое предупреждение</string>
